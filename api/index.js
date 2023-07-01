@@ -2,8 +2,8 @@ import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
-import User from "../Modals/User.js";
-import bcrypt from "bcryptjs";
+import User from "./Modals/User.js";
+// import bcrypt from "bcrypt";
 import cors from "cors";
 
 await mongoose.connect("mongodb://localhost:27017/auth", {
@@ -31,8 +31,8 @@ app.get("/", (req, res) => {
 
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
-  const hashedPassword = bcrypt.hashSync(password, 10);
-  const user = new User({ email: email, password: hashedPassword });
+  //   const hashedPassword = bcrypt.hashSync(password, 10);
+  const user = new User({ email: email, password });
   user.save().then((userInfo) => {
     console.log(userInfo);
     res.send(""); // send back a response to the client
