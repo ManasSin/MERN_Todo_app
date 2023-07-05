@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
 import Express from "express";
-import { router as workoutRouts } from "./Routes/index.js";
-import mongoose, { mongo } from "mongoose";
+import { router as workoutRoutes } from "./Routes/workout.js";
+import { router as userRoutes } from "./Routes/user.js";
+import mongoose from "mongoose";
 
 // config packages
 const app = Express();
@@ -16,7 +17,8 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.use("/api/workouts", workoutRouts);
+app.use("/api/workouts", workoutRoutes);
+app.use("/api/user", userRoutes);
 
 // connect to database
 mongoose
@@ -30,5 +32,3 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-
-// mongodb+srv://WorkoutAppAdmin:<password>@rawdy.j0jmbvo.mongodb.net/?retryWrites=true&w=majority
