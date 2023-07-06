@@ -3,7 +3,9 @@ import Workout from "../Modals/Workout.js";
 
 // functino to get all worukoit
 export const getWorkouts = async (req, res) => {
-  const workouts = await Workout.find({}).sort({ createdAt: -1 });
+  const user_id = req.user._id;
+
+  const workouts = await Workout.find({ user_id }).sort({ createdAt: -1 });
 
   res.status(200).json(workouts);
 };
@@ -35,7 +37,9 @@ export const createWorkout = async (req, res) => {
       .json({ error: "please fill all fields", emptyFields });
   }
   try {
-    const newWorkout = await Workout.create({ title, load, reps });
+    const user_id = req.user._id;
+
+    const newWorkout = await Workout.create({ title, load, reps, user_id });
     res.status(201).json(newWorkout);
   } catch (error) {
     res.status(400).json({ error: error.message });
