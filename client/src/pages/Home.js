@@ -2,22 +2,27 @@ import React, { useEffect } from "react";
 import WorkoutDetails from "../Components/WorkoutDetails";
 import WorkoutsForm from "../Components/WorkoutsForm";
 import { useWorkoutsContext } from "../Hooks/useWorkoutContext";
+import { useAuthContext } from "../Hooks/useAuthContext";
 
 const Home = () => {
-  const workoutURL = "/api/workouts";
+  const { user } = useAuthContext();
 
   const { workouts, dispatch } = useWorkoutsContext();
 
   useEffect(() => {
     const fetchWorkouts = async () => {
-      const response = await fetch(workoutURL);
+      const response = await fetch("/api/workouts", {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
       const data = await response.json();
       if (response.ok) {
         dispatch({ type: "SET_WORKOUTS", payload: data });
       }
     };
-    fetchWorkouts();
-  }, [dispatch]);
+    if (user) fetchWorkouts();
+  }, [dispatch, user]);
 
   return (
     <div className="home">
